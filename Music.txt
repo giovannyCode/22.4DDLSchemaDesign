@@ -1,0 +1,64 @@
+﻿DROP DATABASE IF EXISTS music;
+
+CREATE DATABASE music;
+
+\c music
+
+
+CREATE TABLE "Artists" (
+    "ArtistID" integer   NOT NULL,
+    "ArtistName" text   NOT NULL,
+    CONSTRAINT "pk_Artists" PRIMARY KEY (
+        "ArtistID"
+     )
+);
+
+CREATE TABLE "Songs" (
+    "SongID" integer   NOT NULL,
+    "SongName" Text   NOT NULL,
+    "ArtistID" integer   NOT NULL,
+    "DurationInSeconds" integer   NOT NULL,
+    "AlbumID" integer   NOT NULL,
+    "Release_Date" dateTime   NOT NULL,
+    CONSTRAINT "pk_Songs" PRIMARY KEY (
+        "SongID"
+     )
+);
+
+CREATE TABLE "Albums" (
+    "AlbumId" integer   NOT NULL,
+    "AlbumName" Text   NOT NULL,
+    CONSTRAINT "pk_Albums" PRIMARY KEY (
+        "AlbumId"
+     )
+);
+
+CREATE TABLE "Producers" (
+    "ProducerID" Integer   NOT NULL,
+    "ProducerName" Integer   NOT NULL,
+    CONSTRAINT "pk_Producers" PRIMARY KEY (
+        "ProducerID"
+     )
+);
+
+CREATE TABLE "SongProducers" (
+    "SongProducerID" int   NOT NULL,
+    "SongID" integer   NOT NULL,
+    "ProducerID" integer   NOT NULL,
+    CONSTRAINT "pk_SongProducers" PRIMARY KEY (
+        "SongProducerID"
+     )
+);
+
+ALTER TABLE "Songs" ADD CONSTRAINT "fk_Songs_ArtistID" FOREIGN KEY("ArtistID")
+REFERENCES "Artists" ("ArtistID");
+
+ALTER TABLE "Songs" ADD CONSTRAINT "fk_Songs_AlbumID" FOREIGN KEY("AlbumID")
+REFERENCES "Albums" ("AlbumId");
+
+ALTER TABLE "SongProducers" ADD CONSTRAINT "fk_SongProducers_SongID" FOREIGN KEY("SongID")
+REFERENCES "Songs" ("SongID");
+
+ALTER TABLE "SongProducers" ADD CONSTRAINT "fk_SongProducers_ProducerID" FOREIGN KEY("ProducerID")
+REFERENCES "Producers" ("ProducerID");
+

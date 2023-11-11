@@ -1,0 +1,53 @@
+﻿
+DROP DATABASE IF EXISTS outer_space;
+
+CREATE DATABASE outer_space;
+
+\c outer_space
+
+
+CREATE TABLE "Planets" (
+    "PlanetID" integer   NOT NULL,
+    "Planetname" Text   NOT NULL,
+    "Orbital_Period_in_Years" Float   NOT NULL,
+    "Orbits_Around" TEXT   NOT NULL,
+    "GalaxyID" int   NOT NULL,
+    CONSTRAINT "pk_Planets" PRIMARY KEY (
+        "PlanetID"
+     )
+);
+
+CREATE TABLE "Galaxies" (
+    "GalaxyID" integer   NOT NULL,
+    "Galaxy_Name" Text   NOT NULL,
+    CONSTRAINT "pk_Galaxies" PRIMARY KEY (
+        "GalaxyID"
+     )
+);
+
+CREATE TABLE "Moons" (
+    "MoonID" integer   NOT NULL,
+    "MoonName" text   NOT NULL,
+    CONSTRAINT "pk_Moons" PRIMARY KEY (
+        "MoonID"
+     )
+);
+
+CREATE TABLE "PlanesMoons" (
+    "PlanesMoonsID" integer   NOT NULL,
+    "PlanetID" integer   NOT NULL,
+    "MoonsID" integet   NOT NULL,
+    CONSTRAINT "pk_PlanesMoons" PRIMARY KEY (
+        "PlanesMoonsID"
+     )
+);
+
+ALTER TABLE "Planets" ADD CONSTRAINT "fk_Planets_GalaxyID" FOREIGN KEY("GalaxyID")
+REFERENCES "Galaxies" ("GalaxyID");
+
+ALTER TABLE "PlanesMoons" ADD CONSTRAINT "fk_PlanesMoons_PlanetID" FOREIGN KEY("PlanetID")
+REFERENCES "Planets" ("PlanetID");
+
+ALTER TABLE "PlanesMoons" ADD CONSTRAINT "fk_PlanesMoons_MoonsID" FOREIGN KEY("MoonsID")
+REFERENCES "Moons" ("MoonID");
+

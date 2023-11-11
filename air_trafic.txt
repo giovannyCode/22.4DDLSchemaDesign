@@ -1,0 +1,78 @@
+﻿
+DROP DATABASE IF EXISTS air_traffic;
+
+CREATE DATABASE air_traffic;
+
+\c air_traffic
+
+CREATE TABLE "Customer" (
+    "CustomerID" Int   NOT NULL,
+    "FirstName" Text   NOT NULL,
+    "LastName" Text   NOT NULL,
+    CONSTRAINT "pk_Customer" PRIMARY KEY (
+        "CustomerID"
+     )
+);
+
+CREATE TABLE "Ticket" (
+    "TicketID" int   NOT NULL,
+    "CustomerID" int   NOT NULL,
+    "AirlineID" int   NOT NULL,
+    "From_city" int   NOT NULL,
+    "From_Country" int   NOT NULL,
+    "To_City" int   NOT NULL,
+    "To_Country" int   NOT NULL,
+    "Seat" Text   NOT NULL,
+    "Departure" DateTime   NOT NULL,
+    "Arrival" DateTime   NOT NULL,
+    CONSTRAINT "pk_Ticket" PRIMARY KEY (
+        "TicketID"
+     )
+);
+
+CREATE TABLE "Countries" (
+    "CountryID" int   NOT NULL,
+    "CountryName" Text   NOT NULL,
+    CONSTRAINT "pk_Countries" PRIMARY KEY (
+        "CountryID"
+     )
+);
+
+CREATE TABLE "Cities" (
+    "CityID" int   NOT NULL,
+    "CityName" Text   NOT NULL,
+    "Country" int   NOT NULL,
+    CONSTRAINT "pk_Cities" PRIMARY KEY (
+        "CityID"
+     )
+);
+
+CREATE TABLE "Airlines" (
+    "AirlineID" int   NOT NULL,
+    "AirlineName" Text   NOT NULL,
+    CONSTRAINT "pk_Airlines" PRIMARY KEY (
+        "AirlineID"
+     )
+);
+
+ALTER TABLE "Ticket" ADD CONSTRAINT "fk_Ticket_CustomerID" FOREIGN KEY("CustomerID")
+REFERENCES "Customer" ("CustomerID");
+
+ALTER TABLE "Ticket" ADD CONSTRAINT "fk_Ticket_AirlineID" FOREIGN KEY("AirlineID")
+REFERENCES "Airlines" ("AirlineID");
+
+ALTER TABLE "Ticket" ADD CONSTRAINT "fk_Ticket_From_city" FOREIGN KEY("From_city")
+REFERENCES "Cities" ("CityID");
+
+ALTER TABLE "Ticket" ADD CONSTRAINT "fk_Ticket_From_Country" FOREIGN KEY("From_Country")
+REFERENCES "Countries" ("CountryID");
+
+ALTER TABLE "Ticket" ADD CONSTRAINT "fk_Ticket_To_City" FOREIGN KEY("To_City")
+REFERENCES "Cities" ("CityID");
+
+ALTER TABLE "Ticket" ADD CONSTRAINT "fk_Ticket_To_Country" FOREIGN KEY("To_Country")
+REFERENCES "Countries" ("CountryID");
+
+ALTER TABLE "Cities" ADD CONSTRAINT "fk_Cities_Country" FOREIGN KEY("Country")
+REFERENCES "Countries" ("CountryID");
+
